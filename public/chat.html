@@ -1,69 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
-  <link rel="stylesheet" href="css/style.css">
-  <script src='https://meet.jit.si/external_api.js'></script>
-  <title>InChat App</title>
-</head>
-<body>
-  <div class="chat-container">
-    <header class="chat-header">
-      <h1><i class="fas fa-smile"></i> InChat </h1>
-      <a href="index.html" class="btn">Leave Room</a>
-      <button id = "start" type = "start" style="background-color: rgba(97, 160, 215, 0.473); border: none; padding: 5px; border-radius: 8px;"><img src = "images/zoom.png" width = "30px"></button>
-      <div id = "jitsi-container" style = "position: absolute; z-index: 5; top: 10%;"  ></div>
-      <script>
-        var button = document.querySelector('#start');
-        var container = document.querySelector('#jitsi-container');
-        var api = null;
-        button.addEventListener('click', ()=>{
-          var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-          var stringLength = 30;
-          function pickRandom(){
-            return possible[Math.floor()*possible.length];
-          }
-          var randomString = Array.apply(null, Array(stringLength)).map(pickRandom).join('');
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+      integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk="
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://meet.jit.si/external_api.js"></script>
+    <title>InChat App</title>
+  </head>
+  <body>
+    <div class="chat-container">
+      <header class="chat-header">
+        <h1><i class="fas fa-smile"></i> InChat</h1>
+        <a href="index.html" class="btn">Leave Room</a>
+        <button
+          id="start"
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          type="start"
+          style="
+            background-color: rgba(97, 160, 215, 0.473);
+            border: none;
+            padding: 5px;
+            border-radius: 8px;
+          "
+        >
+          <img src="images/zoom.png" width="30px" />
+        </button>
 
-          var domain = 'meet.jit.si';
-          var options = {
-            'roomName': randomString,
-            'parentNode': container,
-            'width':800,
-            'height': 800,
-          };
-          api = new JitsiMeetExternalAPI(domain, options);
-        })
-      </script>
-    </header>
-    <main class="chat-main">
-      <div class="chat-sidebar">
-        <h3><i class="fas fa-comments"></i> Room Name:</h3>
-        <h2 id="room-name"></h2>
-        <h3><i class="fas fa-users"></i> Users</h3>
-        <ul id="users">
-        </ul>
+        <!-- Modal -->
+        <div
+          class="modal fade"
+          id="exampleModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div
+            class="modal-dialog"
+            style="min-width: 90%; height: fit-content; padding: 30px"
+            role="document"
+          >
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5
+                  class="modal-title"
+                  id="exampleModalLabel"
+                  style="color: black"
+                >
+                  InChat Meet
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div id="jitsi-container"></div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                  id="closemeet"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <script>
+          var button = document.querySelector("#start");
+          var button2 = document.querySelector("#closemeet");
+          var container = document.querySelector("#jitsi-container");
+          container.innerHTML = "";
+          var api = null;
+          button.addEventListener("click", () => {
+            var possible =
+              "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var stringLength = 30;
+
+            function pickRandom() {
+              return possible.charAt(
+                Math.floor(Math.random() * possible.length)
+              );
+            }
+
+            var randomString = Array.apply(null, Array(stringLength))
+              .map(pickRandom)
+              .join("");
+
+            var domain = "meet.jit.si";
+            var options = {
+              roomName: randomString,
+              parentNode: container,
+              width: 800,
+              height: 800,
+            };
+
+            api = new JitsiMeetExternalAPI(domain, options);
+          });
+          button2.addEventListener("click", () => {
+            if (api) {
+              api.dispose();
+            }
+          });
+        </script>
+      </header>
+      <main class="chat-main">
+        <div class="chat-sidebar">
+          <h3><i class="fas fa-comments"></i> Room Name:</h3>
+          <h2 id="room-name"></h2>
+          <h3><i class="fas fa-users"></i> Users</h3>
+          <ul id="users"></ul>
+        </div>
+        <div class="chat-messages"></div>
+      </main>
+      <div class="chat-form-container">
+        <form id="chat-form">
+          <input
+            id="msg"
+            type="text"
+            placeholder="Enter Message"
+            required
+            autocomplete="off"
+          />
+          <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
+        </form>
       </div>
-      <div class="chat-messages"></div>
-    </main>
-    <div class="chat-form-container">
-      <form id="chat-form">
-        <input
-          id="msg"
-          type="text"
-          placeholder="Enter Message"
-          required
-          autocomplete="off"
-        />
-        <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
-      </form>
     </div>
-  </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.10.3/qs.min.js" integrity="sha512-juaCj8zi594KHQqb92foyp87mCSriYjw3BcTHaXsAn4pEB1YWh+z+XQScMxIxzsjfM4BeVFV3Ij113lIjWiC2w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="js/main.js"></script>
-</body>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.10.3/qs.min.js"
+      integrity="sha512-juaCj8zi594KHQqb92foyp87mCSriYjw3BcTHaXsAn4pEB1YWh+z+XQScMxIxzsjfM4BeVFV3Ij113lIjWiC2w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/main.js"></script>
+  </body>
 </html>
