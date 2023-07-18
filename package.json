@@ -1,0 +1,21 @@
+{
+  "name": "inchat",
+  "version": "1.0.0",
+  "description": "Real Time Chat APP",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server"
+  },
+  "author": "Rajesh Panjiyar",
+  "license": "MIT",
+  "dependencies": {
+    "date-and-time": "^2.2.1",
+    "express": "^4.17.3",
+    "moment": "^2.29.1",
+    "socket.io": "^4.4.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
